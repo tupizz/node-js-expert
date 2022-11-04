@@ -9,7 +9,8 @@
     "api1": "curl http://localhost:3000 | tee logs/log1.txt",
     "api2": "curl http://localhost:4000 | tee logs/log2.txt",
     "example01": "node examples/01-concat-streams-pass-through.js | tee logs/01-concat-streams-pass-through.txt",
-    "example02": "node examples/02-async-streams.js | tee logs/02-async-streams.txt"
+    "example02": "node examples/02-async-streams.js | tee logs/02-async-streams.txt",
+    "example03": "node examples/03-concat-streams-async-iterators | tee logs/03-concat-streams-async-iterators.txt"
   },
   "keywords": [],
   "author": "",
