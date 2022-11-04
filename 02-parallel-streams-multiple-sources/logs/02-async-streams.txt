@@ -1,0 +1,7 @@
+[transform] transforming -> Hello world, how are you?!
+[writable] writing to console -> hello_world,_how_are_you?!
+[transform] transforming -> custom readable stream
+[writable] writing to console -> custom_readable_stream
+[transform] transforming -> custom readable stream
+[writable] writing to console -> custom_readable_stream
+process has finished!
