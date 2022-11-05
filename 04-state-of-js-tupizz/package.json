@@ -1,0 +1,19 @@
+{
+  "name": "04-state-of-js-tupizz",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start": "node src/index.js | tee logs/log.txt"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "split2": "^4.1.0"
+  }
+}
