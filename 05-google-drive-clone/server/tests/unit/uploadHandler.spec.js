@@ -101,4 +101,37 @@ describe("# UploadHandler test suite", () => {
       expect(onWrite.mock.calls.join()).toEqual(messages.join());
     });
   });
+
+  describe("# canExecute()", () => {
+    test("should return true when time is later than specified delay", async () => {
+      const handler = new UploadHandler({
+        socketId: "",
+        socketIo: null,
+        downloadsFolder: "./",
+        messageTimeDelay: 1_000,
+      });
+
+      const timeNow = TestUtil.getTimeFromDate("2021-07-01 00:00:03");
+      TestUtil.mockDateNow([timeNow]);
+      const lastExecution = TestUtil.getTimeFromDate("2021-07-01 00:00:00");
+      const result = handler.canExecute(lastExecution);
+      expect(result).toBeTruthy();
+    });
+
+    test("should return false when time is before than specified delay", () => {
+      const handler = new UploadHandler({
+        socketId: "",
+        socketIo: null,
+        downloadsFolder: "./",
+        messageTimeDelay: 5_000,
+      });
+
+      const timeNow = TestUtil.getTimeFromDate("2021-07-01 00:00:03");
+      TestUtil.mockDateNow([timeNow]);
+      const lastExecution = TestUtil.getTimeFromDate("2021-07-01 00:00:02");
+      // this can't be executed because it's less than 2 seconds which is the messageTimeDelay messageTimeDelay
+      const result = handler.canExecute(lastExecution);
+      expect(result).toBeFalsy();
+    });
+  });
 });

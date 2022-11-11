@@ -4,15 +4,18 @@ import { pipeline } from "stream/promises";
 import { logger } from "./logger";
 
 export default class UploadHandler {
-  constructor({ socketIo, socketId, downloadsFolder }) {
+  constructor({ socketIo, socketId, downloadsFolder, messageTimeDelay = 200 }) {
     this.socketIo = socketIo;
     this.socketId = socketId;
     this.downloadsFolder = downloadsFolder;
+    this.messageTimeDelay = messageTimeDelay;
     this.ON_UPLOAD_EVENT = "file-upload";
   }
 
   // backpressure paradigm
-  canExecute(lastExecution) {}
+  canExecute(lastExecution) {
+    return Date.now() - lastExecution > this.messageTimeDelay;
+  }
 
   handleFileBytes(filename) {
     this.lastMessageSent = Date.now();

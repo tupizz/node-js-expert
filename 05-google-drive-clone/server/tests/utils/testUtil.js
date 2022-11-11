@@ -1,4 +1,5 @@
 import { Readable, Writable, Transform } from "stream";
+import { jest } from "@jest/globals";
 
 export default class TestUtil {
   static generateReadableStream(data) {
@@ -37,6 +38,18 @@ export default class TestUtil {
         onData(chunk);
         callback(null, chunk);
       },
+    });
+  }
+
+  static getTimeFromDate(dateString) {
+    return new Date(dateString).getTime();
+  }
+
+  static mockDateNow(mockImplementationPeriods) {
+    const now = jest.spyOn(global.Date, global.Date.now.name);
+
+    mockImplementationPeriods.forEach((time) => {
+      now.mockReturnValueOnce(time);
     });
   }
 }
