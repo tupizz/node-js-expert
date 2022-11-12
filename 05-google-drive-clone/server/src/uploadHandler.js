@@ -14,7 +14,7 @@ export default class UploadHandler {
 
   // backpressure paradigm
   canExecute(lastExecution) {
-    return Date.now() - lastExecution > this.messageTimeDelay;
+    return Date.now() - lastExecution >= this.messageTimeDelay;
   }
 
   handleFileBytes(filename) {
@@ -30,6 +30,7 @@ export default class UploadHandler {
           continue;
         }
 
+        this.lastMessageSent = Date.now();
         this.socketIo.to(this.socketId).emit(this.ON_UPLOAD_EVENT, { filename, processedAlready });
         logger.info(`File [${filename}] got ${processedAlready} bytes to ${this.socketId}`);
       }

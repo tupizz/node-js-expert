@@ -100,6 +100,61 @@ describe("# UploadHandler test suite", () => {
       expect(onWrite).toHaveBeenCalledTimes(messages.length);
       expect(onWrite.mock.calls.join()).toEqual(messages.join());
     });
+
+    test("given message timerDelay as 2secs it should emit only two messages during 3 seconds period", async () => {
+      jest.spyOn(ioObject, ioObject.emit.name);
+
+      // Mock all Date.now()
+      const day = "2021-07-01 01:01";
+
+      //  Date.now() do this.lastMessageSent em handleBytes
+      const onFirstLastMessageSent = TestUtil.getTimeFromDate(`${day}:00`);
+
+      // "hello" message
+      const onFirstCanExecute = TestUtil.getTimeFromDate(`${day}:02`);
+      const onSecondUpdateLastMessageSent = onFirstCanExecute;
+
+      // "world" message (cannot execute, less than 2secs)
+      const onSecondCanExecute = TestUtil.getTimeFromDate(`${day}:03`);
+
+      // "from" message
+      const onThirdCanExecute = TestUtil.getTimeFromDate(`${day}:04`);
+
+      TestUtil.mockDateNow([
+        onFirstLastMessageSent,
+        onFirstCanExecute,
+        onSecondUpdateLastMessageSent,
+        onSecondCanExecute,
+        onThirdCanExecute,
+      ]);
+
+      const messages = ["hello", "world", "from"];
+      const source = TestUtil.generateReadableStream(messages);
+      const onWrite = jest.fn();
+      const target = TestUtil.generateWritableStream(onWrite);
+
+      // Mimicking what onFile() is doing inside
+      const handler = new UploadHandler({
+        socketId: "01",
+        socketIo: ioObject,
+        messageTimeDelay: 2000,
+      });
+      await pipeline(source, handler.handleFileBytes("filename.txt"), target);
+
+      expect(ioObject.emit).toHaveBeenCalledTimes(2);
+
+      const [firstCallResult, secondCallResult] = ioObject.emit.mock.calls;
+
+      expect(firstCallResult).toEqual([
+        handler.ON_UPLOAD_EVENT,
+        { processedAlready: "hello".length, filename: "filename.txt" },
+      ]);
+
+      expect(secondCallResult).toEqual([
+        handler.ON_UPLOAD_EVENT,
+        { processedAlready: messages.join("").length, filename: "filename.txt" },
+      ]);
+    });
   });
 
   describe("# canExecute()", () => {
