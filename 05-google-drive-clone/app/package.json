@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "npx http-server public --cert certificates/cert.pem --key certificates/key.pem --ssl -c-1",
     "start": "npx http-server public"
   },
   "keywords": [],
