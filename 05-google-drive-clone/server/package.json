@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "mkdir -p downloads && node src/index.js",
+    "prod": "mkdir -p downloads && NODE_ENV=production node src/index.js",
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --runInBand",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules npx jest --watch --runInBand",
     "test:cov": "NODE_OPTIONS=--experimental-vm-modules npx jest --no-cache --runInBand --coverage"
@@ -24,5 +25,8 @@
     "pino-pretty": "5.1",
     "pretty-bytes": "5.6",
     "socket.io": "4.1"
+  },
+  "engines": {
+    "node": "16"
   }
 }

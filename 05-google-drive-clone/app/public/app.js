@@ -5,7 +5,8 @@ import DragNDropManager from "./src/dragNDropManager.js";
 
 console.log("Hello from app.js");
 
-const API_URL = "https://localhost:3000";
+// const API_URL = "https://localhost:3000";
+const API_URL = "https://gdrive-clone-tupizz.herokuapp.com";
 
 const appController = new AppController({
   viewManager: new ViewManager(),
